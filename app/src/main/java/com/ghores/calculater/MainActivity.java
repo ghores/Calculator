@@ -8,7 +8,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
-
     TextView txt_history;
     TextView txt_result;
     Button btn_0;
@@ -35,96 +34,6 @@ public class MainActivity extends AppCompatActivity {
     boolean mustReset = false;
     float currentResult = 0;
     String operand = "";
-
-    public void toggleSign() {
-        String resultValue = txt_result.getText().toString();
-        if (resultValue.contains("-")) {
-            resultValue = resultValue.replace("-", "");
-        } else {
-            resultValue = "-" + resultValue;
-        }
-
-        txt_result.setText(resultValue);
-    }
-
-    public void compute(String nextOperand) {
-        String resultValue = txt_result.getText().toString();
-        float resultNumber = Float.parseFloat(resultValue);
-
-        if (operand.equals("+")) {
-            currentResult += resultNumber;
-        } else if (operand.equals("-")) {
-            currentResult -= resultNumber;
-        } else if (operand.equals("*")) {
-            currentResult *= resultNumber;
-        } else if (operand.equals("/")) {
-            currentResult /= resultNumber;
-        } else if (operand.equals("")) {
-            currentResult = resultNumber;
-        }
-
-        String oldHistory = txt_history.getText().toString();
-        txt_history.setText(oldHistory + " " + resultNumber + " " + nextOperand);
-        txt_result.setText("" + currentResult);
-        operand = nextOperand;
-        mustReset = true;
-    }
-
-    public void processEqual() {
-        compute("");
-        txt_history.setText("");
-    }
-
-    public void doOperand(String nextOperand) {
-        compute(nextOperand);
-    }
-
-    public void backOneLetter() {
-        String value = txt_result.getText().toString();
-        String newValue = value.substring(0, value.length() - 1);
-        txt_result.setText(newValue);
-    }
-
-    public void addPoint() {
-        if (mustReset) {
-            txt_result.setText("0");
-            mustReset = false;
-        }
-
-        String oldValue = txt_result.getText().toString();
-        if (oldValue.contains(".")) {
-            return;
-        }
-
-        if (oldValue.length() > 9) {
-            return;
-        }
-
-        txt_result.setText(oldValue + ".");
-    }
-
-    public void appendNumber(int num) {
-        if (mustReset) {
-            txt_result.setText("");
-            mustReset = false;
-        }
-
-        String oldValue = txt_result.getText().toString();
-
-        if (oldValue.length() > 9) {
-            return;
-        }
-
-        if (oldValue.equals("0")) {
-            if (num == 0) {
-                return;
-            } else {
-                oldValue = "";
-            }
-        }
-
-        txt_result.setText(oldValue + num);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
                 appendNumber(index);
             }
         };
-
         btn_0.setOnClickListener(numbersListener);
         btn_1.setOnClickListener(numbersListener);
         btn_2.setOnClickListener(numbersListener);
@@ -229,5 +137,86 @@ public class MainActivity extends AppCompatActivity {
                 toggleSign();
             }
         });
+    }
+
+    public void toggleSign() {
+        String resultValue = txt_result.getText().toString();
+        if (resultValue.contains("-")) {
+            resultValue = resultValue.replace("-", "");
+        } else {
+            resultValue = "-" + resultValue;
+        }
+
+        txt_result.setText(resultValue);
+    }
+
+    public void compute(String nextOperand) {
+        String resultValue = txt_result.getText().toString();
+        float resultNumber = Float.parseFloat(resultValue);
+        if (operand.equals("+")) {
+            currentResult += resultNumber;
+        } else if (operand.equals("-")) {
+            currentResult -= resultNumber;
+        } else if (operand.equals("*")) {
+            currentResult *= resultNumber;
+        } else if (operand.equals("/")) {
+            currentResult /= resultNumber;
+        } else if (operand.equals("")) {
+            currentResult = resultNumber;
+        }
+        String oldHistory = txt_history.getText().toString();
+        txt_history.setText(oldHistory + " " + resultNumber + " " + nextOperand);
+        txt_result.setText("" + currentResult);
+        operand = nextOperand;
+        mustReset = true;
+    }
+
+    public void processEqual() {
+        compute("");
+        txt_history.setText("");
+    }
+
+    public void doOperand(String nextOperand) {
+        compute(nextOperand);
+    }
+
+    public void backOneLetter() {
+        String value = txt_result.getText().toString();
+        String newValue = value.substring(0, value.length() - 1);
+        txt_result.setText(newValue);
+    }
+
+    public void addPoint() {
+        if (mustReset) {
+            txt_result.setText("0");
+            mustReset = false;
+        }
+        String oldValue = txt_result.getText().toString();
+        if (oldValue.contains(".")) {
+            return;
+        }
+        if (oldValue.length() > 9) {
+            return;
+        }
+        txt_result.setText(oldValue + ".");
+    }
+
+    public void appendNumber(int num) {
+        if (mustReset) {
+            txt_result.setText("");
+            mustReset = false;
+        }
+        String oldValue = txt_result.getText().toString();
+        if (oldValue.length() > 9) {
+            return;
+        }
+        if (oldValue.equals("0")) {
+            if (num == 0) {
+                return;
+            } else {
+                oldValue = "";
+            }
+        }
+        txt_result.setText(oldValue + num);
     }
 }
